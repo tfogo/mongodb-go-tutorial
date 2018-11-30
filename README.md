@@ -11,19 +11,19 @@ You can view the complete code for this tutorial on [this GitHub repository](). 
 
 ## Installing the MongoDB Go Driver
 
-Run the following command to install the Go driver using `go get`:
+The MongoDB Go driver is made up of several packages. Run the following command to install all the Go driver packages using `go get`:
 
 ```
 go get github.com/mongodb/mongo-go-driver
 ```
 
-If you are using the `dep` package manager, install the Go driver using:
+If you are using the `dep` package manager, install the main `mongo` package as well as the `bson` package using this command:
 
 ```
-dep ensure --add github.com/mongodb/mongo-go-driver
+dep ensure --add github.com/mongodb/mongo-go-driver/mongo github.com/mongodb/mongo-go-driver/bson
 ```
 
-The MongoDB Go driver is made up of several packages which will need to be imported. Create the file `main.go` and import the `bson` and `mongo` packages:
+Create the file `main.go` and import the `bson` and `mongo` packages:
 
 ```go
 package main
@@ -191,4 +191,4 @@ fmt.Printf("Result: %+v\n", *result)
 
 ## Next steps
 
-You can. MongoDB Go Driver is available on [GoDoc. Questions can be asked through the mongo-go-driver Google Group and bug reports should be filed against the Go project in the MongoDB JIRA. Your feedback on the Go driver is greatly appreciated.
+You can view the final code from this tuoprial in [this GitHub repository](). Documentation for the MongoDB Go Driver is available on [GoDoc](). If you have any questions, please get in touch in the [mongo-go-driver Google Group](https://groups.google.com/forum/#!forum/mongodb-go-driver). Please file any bug reports on the Go project in the [MongoDB JIRA](https://www.google.com/url?q=https%3A%2F%2Fjira.mongodb.org%2Fprojects%2FGODRIVER&sa=D&sntz=1&usg=AFQjCNEOEt6d3ZNOMKzmT23RYOVYdjSD6g). We would love your feedback on the Go Driver, so please get in touch with us to let us know your thoughts.

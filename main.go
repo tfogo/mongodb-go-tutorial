@@ -30,7 +30,7 @@ func main() {
 	}
 	id := res.InsertedID
 
-	fmt.Println("ID", id)
+	fmt.Println("ID ", id)
 
 	person1 := Person{"Tim", 25}
 
