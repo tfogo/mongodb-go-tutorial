@@ -35,7 +35,7 @@ func main() {
 	brock := Trainer{"Brock", 15, "Pewter City"}
 
 	// Insert a single document
-	insertResult, err := collection.InsertOne(context.Background(), ash)
+	insertResult, err := collection.InsertOne(context.TODO(), ash)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -44,7 +44,7 @@ func main() {
 	// Insert multiple documents
 	trainers := []interface{}{misty, brock}
 
-	insertManyResult, err := collection.InsertMany(context.Background(), trainers)
+	insertManyResult, err := collection.InsertMany(context.TODO(), trainers)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -59,7 +59,7 @@ func main() {
 		}},
 	}
 
-	updateResult, err := collection.UpdateOne(context.Background(), filter, update)
+	updateResult, err := collection.UpdateOne(context.TODO(), filter, update)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -68,7 +68,7 @@ func main() {
 	// Find a single document
 	result := &Trainer{}
 
-	err = collection.FindOne(context.Background(), filter).Decode(result)
+	err = collection.FindOne(context.TODO(), filter).Decode(result)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -98,12 +98,14 @@ func main() {
 		results = append(results, elem)
 	}
 
-	cur.Close(context.TODO())
-
-	fmt.Printf("Found multiple documents (array of pointers): %+v\n", results)
 	if err := cur.Err(); err != nil {
 		log.Fatal(err)
 	}
+	
+	// Close the cursor once finished
+	cur.Close(context.TODO())
+	
+	fmt.Printf("Found multiple documents (array of pointers): %+v\n", results)
 
 	// Delete all the documents in the collection
 	deleteResult, err := collection.DeleteMany(context.TODO(), nil)
