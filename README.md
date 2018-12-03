@@ -1,6 +1,6 @@
 # MongoDB Go Driver Tutorial
 
-This tutorial will help you get started with the official [MongoDB Go driver](https://github.com/mongodb/mongo-go-driver/). We will be coding a simple program to demonstrate how to:
+This tutorial will help you get started with the official [MongoDB Go Driver](https://github.com/mongodb/mongo-go-driver/). We will be coding a simple program to demonstrate how to:
 
 - Install the MongoDB Go Driver
 - Connect to MongoDB using the Go Driver
@@ -11,7 +11,7 @@ You can view the complete code for this tutorial on [this GitHub repository](htt
 
 ## Installing the MongoDB Go Driver
 
-The MongoDB Go driver is made up of several packages. If you are using the `dep` package manager, you can install the main `mongo` package as well as the `bson` and `options` package using this command:
+The MongoDB Go Driver is made up of several packages. If you are using the `dep` package manager, you can install the main `mongo` package as well as the `bson` and `options` package using this command:
 
 ```
 dep ensure -v --add github.com/mongodb/mongo-go-driver/mongo \
@@ -49,9 +49,9 @@ func main() {
 This code also imports some standard libraries and defines a `Trainer` type. We will be using these later in the tutorial.
 
 
-## Connect to MongoDB using the Go driver
+## Connect to MongoDB using the Go Driver
 
-Once the MongoDB driver has been imported, you can connect to a MongoDB deployment using the `mongo.Connect()` function. You must pass a context and connection string to `mongo.Connect()`. Optionally, you can also pass in an `options.ClientOptions` object as a third argument to configure driver settings such as write concerns, socket timeouts, and more. [The options package documentation](https://godoc.org/github.com/mongodb/mongo-go-driver/mongo/options) has more information about what client options are available.
+Once the MongoDB Go Driver has been imported, you can connect to a MongoDB deployment using the `mongo.Connect()` function. You must pass a context and connection string to `mongo.Connect()`. Optionally, you can also pass in an `options.ClientOptions` object as a third argument to configure driver settings such as write concerns, socket timeouts, and more. [The options package documentation](https://godoc.org/github.com/mongodb/mongo-go-driver/mongo/options) has more information about what client options are available.
 
 ```go
 client, err := mongo.Connect(context.TODO(), "mongodb://localhost:27017")
@@ -87,7 +87,7 @@ Run the code (`go run main.go`) to test that your program can successfully conne
 
 ## Using BSON Objects in Go
 
-Documents in MongoDB are stored as a type of binary-encoded JSON called BSON. The Go driver has two families of types for representing BSON data: The `D` types and the `Raw` types.
+Documents in MongoDB are stored as a type of binary-encoded JSON called BSON. The Go Driver has two families of types for representing BSON data: The `D` types and the `Raw` types.
 
 The `D` family of types is used to concisely build BSON objects using native Go types. This can be particularly useful for constructing commands passed to MongoDB. The `D` family consists of four types:
 
