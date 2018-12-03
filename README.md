@@ -31,20 +31,20 @@ Create the file `main.go` and import the `bson`, `mongo`, and `options` packages
 package main
 
 import (
-	"context"
-	"fmt"
-	"log"
+    "context"
+    "fmt"
+    "log"
 
-	"github.com/mongodb/mongo-go-driver/bson"
+    "github.com/mongodb/mongo-go-driver/bson"
     "github.com/mongodb/mongo-go-driver/mongo"
     "github.com/mongodb/mongo-go-driver/options"
 )
 
 // We will be using this Person type later in the program
 type Trainer struct {
-	Name string 
-	Age  int    
-	City string
+    Name string 
+    Age  int    
+    City string
 }
 
 func main() {
