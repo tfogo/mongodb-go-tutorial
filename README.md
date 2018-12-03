@@ -112,7 +112,7 @@ The `Raw` family of types is used for validating a slice of bytes. You can also 
 
 ## CRUD Operations
 
-Once you have connceted to the database, it's time to start adding and manipulating some data. The `Collection` type has several methods which allow you to send queries to the database.
+Once you have connected to the database, it's time to start adding and manipulating some data. The `Collection` type has several methods which allow you to send queries to the database.
 
 ### Inserting documents
 
@@ -243,6 +243,6 @@ fmt.Printf("Deleted %v documents in the trainers collection\n", deleteResult.Del
 
 ## Next steps
 
-You can view the final code from this tuoprial in [this GitHub repository](). Documentation for the MongoDB Go Driver is available on [GoDoc](https://godoc.org/github.com/mongodb/mongo-go-driver). You may be particularly interested in the documentation about using [aggregations](https://godoc.org/github.com/mongodb/mongo-go-driver/mongo#Collection.Aggregate) or [transactions](https://godoc.org/github.com/mongodb/mongo-go-driver/mongo#Session). 
+You can view the final code from this tutorial in [this GitHub repository](). Documentation for the MongoDB Go Driver is available on [GoDoc](https://godoc.org/github.com/mongodb/mongo-go-driver). You may be particularly interested in the documentation about using [aggregations](https://godoc.org/github.com/mongodb/mongo-go-driver/mongo#Collection.Aggregate) or [transactions](https://godoc.org/github.com/mongodb/mongo-go-driver/mongo#Session). 
 
 If you have any questions, please get in touch in the [mongo-go-driver Google Group](https://groups.google.com/forum/#!forum/mongodb-go-driver). Please file any bug reports on the Go project in the [MongoDB JIRA](https://www.google.com/url?q=https%3A%2F%2Fjira.mongodb.org%2Fprojects%2FGODRIVER&sa=D&sntz=1&usg=AFQjCNEOEt6d3ZNOMKzmT23RYOVYdjSD6g). We would love your feedback on the Go Driver, so please get in touch with us to let us know your thoughts.
