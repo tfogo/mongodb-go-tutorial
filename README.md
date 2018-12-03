@@ -14,7 +14,7 @@ You can view the complete code for this tutorial on [this GitHub repository](htt
 The MongoDB Go Driver is made up of several packages. If you are using the `dep` package manager, you can install the main `mongo` package as well as the `bson` and `options` package using this command:
 
 ```
-dep ensure -v --add github.com/mongodb/mongo-go-driver/mongo \
+dep ensure --add github.com/mongodb/mongo-go-driver/mongo \
 github.com/mongodb/mongo-go-driver/bson \
 github.com/mongodb/mongo-go-driver/options
 ```
