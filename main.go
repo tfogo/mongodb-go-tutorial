@@ -7,71 +7,118 @@ import (
 
 	"github.com/mongodb/mongo-go-driver/bson"
 	"github.com/mongodb/mongo-go-driver/mongo"
+	"github.com/mongodb/mongo-go-driver/options"
 )
 
-type Person struct {
-	Name string `bson:personName`
-	Age  int    `bson:personAge`
+type Trainer struct {
+	Name string 
+	Age  int    
+	City string
 }
 
 func main() {
+
+	// Connect to MongoDB
 	client, err := mongo.Connect(context.TODO(), "mongodb://localhost:27017")
 	if err != nil {
 		log.Fatal(err)
 	} else {
-		fmt.Println("Connected to MongoDB!")
+		fmt.Println("Connected to MongoDB! ")
 	}
 
-	collection := client.Database("baz").Collection("qux")
+	// Get a handle for your collection
+	collection := client.Database("test").Collection("trainers")
 
-	res, err := collection.InsertOne(context.Background(), map[string]string{"hello": "world"})
+	// Some dummy data to add to the Database
+	ash := Trainer{"Ash", 10, "Pallet Town"}
+	misty := Trainer{"Misty", 10, "Cerulean City"}
+	brock := Trainer{"Brock", 15, "Pewter City"}
+
+	// Insert a single document
+	insertResult, err := collection.InsertOne(context.Background(), ash)
 	if err != nil {
 		log.Fatal(err)
 	}
-	id := res.InsertedID
+	fmt.Println("Inserted a single document: ", insertResult.InsertedID)
 
-	fmt.Println("ID ", id)
+	// Insert multiple documents
+	trainers := []interface{}{misty, brock}
 
-	person1 := Person{"Tim", 25}
-
-	fmt.Printf("%+v\n", person1)
-
-	//person1bson, err := bson.Marshal(person1)
-
-	res, err = collection.InsertOne(context.Background(), person1)
+	insertManyResult, err := collection.InsertMany(context.Background(), trainers)
 	if err != nil {
 		log.Fatal(err)
 	}
-	id2 := res.InsertedID
-	fmt.Println("ID", id2)
+	fmt.Println("Inserted multiple documents: ", insertManyResult.InsertedIDs)
 
-	cur, err := collection.Find(context.Background(), nil)
+	// Update a document
+	filter := bson.D{{"name", "Ash"}}
+
+	update := bson.D{
+		{"$inc", bson.D{
+			{"age", 1},
+		}},
+	}
+
+	updateResult, err := collection.UpdateOne(context.Background(), filter, update)
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer cur.Close(context.Background())
-	for cur.Next(context.Background()) {
-		elem := &bson.D{}
-		err := cur.Decode(elem)
-		if err != nil {
-			log.Fatal(err)
-		}
+	fmt.Printf("Matched %v documents and updated %v documents.\n", updateResult.MatchedCount, updateResult.ModifiedCount)
 
-		fmt.Printf("%+v\n", elem)
-
-	}
-	if err := cur.Err(); err != nil {
-		log.Fatal(err)
-	}
-
-	result := &Person{}
-	filter := map[string]string{"name": "Tim"}
+	// Find a single document
+	result := &Trainer{}
 
 	err = collection.FindOne(context.Background(), filter).Decode(result)
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Printf("Result\n")
-	fmt.Printf("%+v\n", result)
+
+	fmt.Printf("Found a single document: %+v\n", result)
+
+	// Add extra options to queries using the options package
+	options := options.Find()
+	options.SetLimit(2)
+
+	var results []*Trainer
+
+	// Finding multiple documents returns a cursor
+	cur, err := collection.Find(context.TODO(), nil, options)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Iterate through the cursor
+	for cur.Next(context.TODO()) {
+		elem := &Trainer{}
+		err := cur.Decode(elem)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		results = append(results, elem)
+	}
+
+	cur.Close(context.TODO())
+
+	fmt.Printf("Found multiple documents (array of pointers): %+v\n", results)
+	if err := cur.Err(); err != nil {
+		log.Fatal(err)
+	}
+
+	// Delete all the documents in the collection
+	deleteResult, err := collection.DeleteMany(context.TODO(), nil)
+	if err := cur.Err(); err != nil {
+		log.Fatal(err)
+	}
+	fmt.Printf("Deleted %v documents in the trainers collection\n", deleteResult.DeletedCount)
+
+	// Close the connection once no longer needed
+	err = client.Disconnect(context.TODO())
+
+	if err != nil {
+		log.Fatal(err)
+	} else {
+		fmt.Println("Connection to MongoDB closed.")
+	}
 
 }
