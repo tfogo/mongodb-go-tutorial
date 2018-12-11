@@ -7,19 +7,25 @@ This tutorial will help you get started with the official [MongoDB Go Driver](ht
 - Use BSON objects in Go
 - Send CRUD operations to MongoDB
 
-You can view the complete code for this tutorial on [this GitHub repository](https://github.com/tfogo/go-tutorial). In order to follow along, you will need a MongoDB database which you can connect. You can use a MongoDB database running locally, or easily create a free 500 MB database using [MongoDB Atlas](https://www.mongodb.com/cloud/atlas).
+You can view the complete code for this tutorial on [this GitHub repository](https://github.com/tfogo/go-tutorial). In order to follow along, you will need a MongoDB database to which you can connect. You can use a MongoDB database running locally, or easily create a free 500 MB database using [MongoDB Atlas](https://www.mongodb.com/cloud/atlas).
 
 ## Installing the MongoDB Go Driver
 
-The MongoDB Go Driver is made up of several packages. If you are using the `dep` package manager, you can install the main `mongo` package as well as the `bson` and `options` package using this command:
+The MongoDB Go Driver is made up of several packages. If you are just using `go get`, you can install the driver using:
+
+```
+go get github.com/mongodb/mongo-go-driver
+```
+
+If you are using the [`dep`](https://golang.github.io/dep/docs/introduction.html) package manager, you can install the main `mongo` package as well as the `bson` and `mongo/options` package using this command:
 
 ```
 dep ensure --add github.com/mongodb/mongo-go-driver/mongo \
 github.com/mongodb/mongo-go-driver/bson \
-github.com/mongodb/mongo-go-driver/options
+github.com/mongodb/mongo-go-driver/mongo/options
 ```
 
-Create the file `main.go` and import the `bson`, `mongo`, and `options` packages:
+Create the file `main.go` and import the `bson`, `mongo`, and `mongo/options` packages:
 
 ```go
 package main
@@ -31,7 +37,7 @@ import (
 
     "github.com/mongodb/mongo-go-driver/bson"
     "github.com/mongodb/mongo-go-driver/mongo"
-    "github.com/mongodb/mongo-go-driver/options"
+    "github.com/mongodb/mongo-go-driver/mongo/options"
 )
 
 // We will be using this Trainer type later in the program
@@ -58,9 +64,8 @@ client, err := mongo.Connect(context.TODO(), "mongodb://localhost:27017")
 
 if err != nil {
     log.Fatal(err)
-} else {
-    fmt.Println("Connected to MongoDB!")
 }
+fmt.Println("Connected to MongoDB!")
 ```
 
 Get a handle for the `trainers` collection in the `test` database using the following line of code:
@@ -78,16 +83,15 @@ err := client.Disconnect(context.TODO())
 
 if err != nil {
     log.Fatal(err)
-} else {
-    fmt.Println("Connection to MongoDB closed.")
 }
+fmt.Println("Connection to MongoDB closed.")
 ```
 
 Run the code (`go run main.go`) to test that your program can successfully connect to your MongoDB server.
 
 ## Using BSON Objects in Go
 
-Documents in MongoDB are stored as a type of binary-encoded JSON called BSON. The Go Driver has two families of types for representing BSON data: The `D` types and the `Raw` types.
+JSON documents in MongoDB are stored in a binary representation called BSON (Binary-encoded JSON). Unlike other databases that store JSON data as simple strings and numbers, the BSON encoding extends the JSON representation to include additional types such as int, long, date, floating point, and decimal128. This makes it much easier for applications to reliably process, sort, and compare data The Go Driver has two families of types for representing BSON data: The `D` types and the `Raw` types.
 
 The `D` family of types is used to concisely build BSON objects using native Go types. This can be particularly useful for constructing commands passed to MongoDB. The `D` family consists of four types:
 
@@ -127,7 +131,7 @@ brock := Trainer{"Brock", 15, "Pewter City"}
 To insert a single document, use the `collection.InsertOne()` method:
 
 ```go
-res, err = collection.InsertOne(context.TODO(), ash)
+reinsertResult, err = collection.InsertOne(context.TODO(), ash)
 if err != nil {
     log.Fatal(err)
 }
@@ -135,7 +139,7 @@ if err != nil {
 fmt.Println("Inserted a single document: ", insertResult.InsertedID)
 ```
 
-To insert multiple documents at a time, the `collection.InsertMany()` method will take an array of objects:
+To insert multiple documents at a time, the `collection.InsertMany()` method will take a slice of objects:
 
 ```go
 trainers := []interface{}{misty, brock}
@@ -179,14 +183,14 @@ To find a document, you will need a filter document as well as a pointer to a va
 
 ```go
 // create a value into which the result can be decoded
-result := &Trainer{}
+var result Trainer
 
-err = collection.FindOne(context.TODO(), filter).Decode(result)
+err = collection.FindOne(context.TODO(), filter).Decode(&result)
 if err != nil {
     log.Fatal(err)
 }
 
-fmt.Printf("Result: %+v\n", *result)
+fmt.Printf("Found a single document: %+v\n", result)
 ```
 
 To find multiple documents, use `collection.Find()`. This method returns a `Cursor`. A `Cursor` provides a stream of documents through which you can iterate and decode one at a time. Once a `Cursor` has been exhausted, you should close the `Cursor`. Here we'll also set some options on the operation using the `options` package. Specifically, we'll set a limit so only 2 documents are returned.
@@ -210,13 +214,13 @@ if err != nil {
 for cur.Next(context.TODO()) {
     
     // create a value into which the single document can be decoded
-    elem := &Trainer{}
-    err := cur.Decode(elem)
+    var elem Trainer
+    err := cur.Decode(&elem)
     if err != nil {
         log.Fatal(err)
     }
 
-    results = append(results, elem)
+    results = append(results, &elem)
 }
 
 if err := cur.Err(); err != nil {

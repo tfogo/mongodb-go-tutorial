@@ -7,12 +7,12 @@ import (
 
 	"github.com/mongodb/mongo-go-driver/bson"
 	"github.com/mongodb/mongo-go-driver/mongo"
-	"github.com/mongodb/mongo-go-driver/options"
+	"github.com/mongodb/mongo-go-driver/mongo/options"
 )
 
 type Trainer struct {
-	Name string 
-	Age  int    
+	Name string
+	Age  int
 	City string
 }
 
@@ -22,9 +22,8 @@ func main() {
 	client, err := mongo.Connect(context.TODO(), "mongodb://localhost:27017")
 	if err != nil {
 		log.Fatal(err)
-	} else {
-		fmt.Println("Connected to MongoDB! ")
 	}
+	fmt.Println("Connected to MongoDB! ")
 
 	// Get a handle for your collection
 	collection := client.Database("test").Collection("trainers")
@@ -66,9 +65,9 @@ func main() {
 	fmt.Printf("Matched %v documents and updated %v documents.\n", updateResult.MatchedCount, updateResult.ModifiedCount)
 
 	// Find a single document
-	result := &Trainer{}
+	var result Trainer
 
-	err = collection.FindOne(context.TODO(), filter).Decode(result)
+	err = collection.FindOne(context.TODO(), filter).Decode(&result)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -89,22 +88,22 @@ func main() {
 
 	// Iterate through the cursor
 	for cur.Next(context.TODO()) {
-		elem := &Trainer{}
-		err := cur.Decode(elem)
+		var elem Trainer
+		err := cur.Decode(&elem)
 		if err != nil {
 			log.Fatal(err)
 		}
 
-		results = append(results, elem)
+		results = append(results, &elem)
 	}
 
 	if err := cur.Err(); err != nil {
 		log.Fatal(err)
 	}
-	
+
 	// Close the cursor once finished
 	cur.Close(context.TODO())
-	
+
 	fmt.Printf("Found multiple documents (array of pointers): %+v\n", results)
 
 	// Delete all the documents in the collection
