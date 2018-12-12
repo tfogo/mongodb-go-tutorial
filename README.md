@@ -87,7 +87,7 @@ We will use this collection handle to query the `trainers` collection.
 It is best practice to keep a client open to MongoDB so that the application can make use of connection pooling - you don't want to open and close a connection for each query. However, if your application no longer requires a connection, the connection can be closed with `client.Disconnect()` like so:
 
 ```go
-err := client.Disconnect(context.TODO())
+err = client.Disconnect(context.TODO())
 
 if err != nil {
     log.Fatal(err)
