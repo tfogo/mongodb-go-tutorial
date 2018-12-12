@@ -1,6 +1,6 @@
 # MongoDB Go Driver Tutorial
 
-With the official MongoDB Go Driver [recently moving to beta](https://www.mongodb.com/blog/post/official-mongodb-go-driver-now-available-for-beta-testing), it's now regarded as feature complete and ready for a wider audience to start using. This tutorial will help you get started with the [MongoDB Go Driver](https://github.com/mongodb/mongo-go-driver/). You will be create a simple program and learn how to:
+With the official MongoDB Go Driver [recently moving to beta](https://www.mongodb.com/blog/post/official-mongodb-go-driver-now-available-for-beta-testing), it's now regarded as feature complete and ready for a wider audience to start using. This tutorial will help you get started with the [MongoDB Go Driver](https://github.com/mongodb/mongo-go-driver/). You will create a simple program and learn how to:
 
 - Install the MongoDB Go Driver
 - Connect to MongoDB using the Go Driver
@@ -214,7 +214,7 @@ To find multiple documents, use `collection.Find()`. This method returns a `Curs
 options := options.Find()
 options.SetLimit(2)
 
-// Here's an array of types to store the decoded documents in
+// Here's an array in which you can store the decoded documents
 var results []*Trainer
 
 // Passing nil as the filter matches all documents in the collection
