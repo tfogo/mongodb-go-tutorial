@@ -1,6 +1,6 @@
 # MongoDB Go Driver Tutorial
 
-This tutorial will help you get started with the official [MongoDB Go Driver](https://github.com/mongodb/mongo-go-driver/). We will be coding a simple program to demonstrate how to:
+With the official MongoDB Go Driver [recently moving to beta](https://mongodbcom-node.corp.mongodb.com/blog/post/official-mongodb-go-driver-now-available-for-beta-testing), it's now regarded as feature complete and is ready for a wider audience to start using. This tutorial will help you get started with the [MongoDB Go Driver](https://github.com/mongodb/mongo-go-driver/). We will be coding a simple program to demonstrate how to:
 
 - Install the MongoDB Go Driver
 - Connect to MongoDB using the Go Driver
