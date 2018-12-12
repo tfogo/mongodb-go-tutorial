@@ -99,7 +99,7 @@ Run the code (`go run main.go`) to test that your program can successfully conne
 
 ## Using BSON Objects in Go
 
-JSON documents in MongoDB are stored in a binary representation called BSON (Binary-encoded JSON). Unlike other databases that store JSON data as simple strings and numbers, the BSON encoding extends the JSON representation to include additional types such as int, long, date, floating point, and decimal128. This makes it much easier for applications to reliably process, sort, and compare data The Go Driver has two families of types for representing BSON data: The `D` types and the `Raw` types.
+JSON documents in MongoDB are stored in a binary representation called BSON (Binary-encoded JSON). Unlike other databases that store JSON data as simple strings and numbers, the BSON encoding extends the JSON representation to include additional types such as int, long, date, floating point, and decimal128. This makes it much easier for applications to reliably process, sort, and compare data. The Go Driver has two families of types for representing BSON data: The `D` types and the `Raw` types.
 
 The `D` family of types is used to concisely build BSON objects using native Go types. This can be particularly useful for constructing commands passed to MongoDB. The `D` family consists of four types:
 
@@ -139,7 +139,7 @@ brock := Trainer{"Brock", 15, "Pewter City"}
 To insert a single document, use the `collection.InsertOne()` method:
 
 ```go
-reinsertResult, err = collection.InsertOne(context.TODO(), ash)
+insertResult, err := collection.InsertOne(context.TODO(), ash)
 if err != nil {
     log.Fatal(err)
 }
@@ -212,7 +212,7 @@ options.SetLimit(2)
 var results []*Trainer
 
 // Passing nil as the filter matches all documents in the collection
-cur, err := `D` types(context.TODO(), nil, options)
+cur, err := collection.Find(context.TODO(), nil, options)
 if err != nil {
     log.Fatal(err)
 }
