@@ -95,7 +95,7 @@ if err != nil {
 fmt.Println("Connection to MongoDB closed.")
 ```
 
-Run the code (`go run main.go`) to test that your program can successfully connect to your MongoDB server.
+Run the code (`go run main.go`) to test that your program can successfully connect to your MongoDB server. Go will complain about the unused `bson` and `mongo/options` packages and the unused `collection` variable, since we haven't done anything with them yet. You can comment these out until they are used to make your program run and test the connection. 
 
 ## Using BSON Objects in Go
 
