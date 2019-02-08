@@ -115,7 +115,7 @@ func main() {
 
 	// Delete all the documents in the collection
 	deleteResult, err := collection.DeleteMany(context.TODO(), nil)
-	if err := cur.Err(); err != nil {
+	if err != nil {
 		log.Fatal(err)
 	}
 	fmt.Printf("Deleted %v documents in the trainers collection\n", deleteResult.DeletedCount)

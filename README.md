@@ -253,7 +253,7 @@ Finally, you can delete documents using `collection.DeleteOne()` or `collection.
 
 ```go
 deleteResult, err := collection.DeleteMany(context.TODO(), nil)
-if err := cur.Err(); err != nil {
+if err != nil {
     log.Fatal(err)
 }
 fmt.Printf("Deleted %v documents in the trainers collection\n", deleteResult.DeletedCount)
