@@ -211,14 +211,14 @@ To find multiple documents, use `collection.Find()`. This method returns a `Curs
 
 ```go
 // Pass these options to the Find method
-options := options.Find()
-options.SetLimit(2)
+findOptions := options.Find()
+findOptions.SetLimit(2)
 
 // Here's an array in which you can store the decoded documents
 var results []*Trainer
 
-// Passing nil as the filter matches all documents in the collection
-cur, err := collection.Find(context.TODO(), nil, options)
+// Passing bson.D{{}} as the filter matches all documents in the collection
+cur, err := collection.Find(context.TODO(), bson.D{{}}, findOptions)
 if err != nil {
     log.Fatal(err)
 }
@@ -249,10 +249,10 @@ fmt.Printf("Found multiple documents (array of pointers): %+v\n", results)
 
 ### Delete Documents
 
-Finally, you can delete documents using `collection.DeleteOne()` or `collection.DeleteMany()`. Here you pass `nil` as the filter argument, which will match all documents in the collection. You could also use [`collection.Drop()`](https://godoc.org/github.com/mongodb/mongo-go-driver/mongo#Collection.Drop) to delete an entire collection.
+Finally, you can delete documents using `collection.DeleteOne()` or `collection.DeleteMany()`. Here you pass `bson.D{{}}` as the filter argument, which will match all documents in the collection. You could also use [`collection.Drop()`](https://godoc.org/github.com/mongodb/mongo-go-driver/mongo#Collection.Drop) to delete an entire collection.
 
 ```go
-deleteResult, err := collection.DeleteMany(context.TODO(), nil)
+deleteResult, err := collection.DeleteMany(context.TODO(), bson.D{{}})
 if err != nil {
     log.Fatal(err)
 }

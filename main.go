@@ -81,14 +81,13 @@ func main() {
 
 	fmt.Printf("Found a single document: %+v\n", result)
 
-	// Add extra options to queries using the options package
-	options := options.Find()
-	options.SetLimit(2)
+	findOptions := options.Find()
+	findOptions.SetLimit(2)
 
 	var results []*Trainer
 
 	// Finding multiple documents returns a cursor
-	cur, err := collection.Find(context.TODO(), nil, options)
+	cur, err := collection.Find(context.TODO(), bson.D{{}}, findOptions)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -114,10 +113,11 @@ func main() {
 	fmt.Printf("Found multiple documents (array of pointers): %+v\n", results)
 
 	// Delete all the documents in the collection
-	deleteResult, err := collection.DeleteMany(context.TODO(), nil)
+	deleteResult, err := collection.DeleteMany(context.TODO(), bson.D{{}})
 	if err != nil {
 		log.Fatal(err)
 	}
+
 	fmt.Printf("Deleted %v documents in the trainers collection\n", deleteResult.DeletedCount)
 
 	// Close the connection once no longer needed
