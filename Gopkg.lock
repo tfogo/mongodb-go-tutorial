@@ -18,8 +18,24 @@
   revision = "2e65f85255dbc3072edf28d6b5b8efc472979f5a"
 
 [[projects]]
-  digest = "1:820eeb72f78947f9b2e87bd99a57b5cc791c8fb47676a5c3824d408441ab1546"
-  name = "github.com/mongodb/mongo-go-driver"
+  branch = "master"
+  digest = "1:40fdfd6ab85ca32b6935853bbba35935dcb1d796c8135efd85947566c76e662e"
+  name = "github.com/xdg/scram"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "7eeb5667e42c09cb51bf7b7c28aea8c56767da90"
+
+[[projects]]
+  branch = "master"
+  digest = "1:f5c1d04bc09c644c592b45b9f0bad4030521b1a7d11c7dadbb272d9439fa6e8e"
+  name = "github.com/xdg/stringprep"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "73f8eece6fdcd902c185bf651de50f3828bed5ed"
+
+[[projects]]
+  digest = "1:7280a69811fe89d769f5cbbee7ec10cc33488d1e0d573c6d65e35a8887ab3420"
+  name = "go.mongodb.org/mongo-driver"
   packages = [
     "bson",
     "bson/bsoncodec",
@@ -53,24 +69,8 @@
     "x/network/wiremessage",
   ]
   pruneopts = "UT"
-  revision = "29905d4bda472574c8b499e2f93b5b2747d8fbd7"
-  version = "v0.1.0"
-
-[[projects]]
-  branch = "master"
-  digest = "1:40fdfd6ab85ca32b6935853bbba35935dcb1d796c8135efd85947566c76e662e"
-  name = "github.com/xdg/scram"
-  packages = ["."]
-  pruneopts = "UT"
-  revision = "7eeb5667e42c09cb51bf7b7c28aea8c56767da90"
-
-[[projects]]
-  branch = "master"
-  digest = "1:f5c1d04bc09c644c592b45b9f0bad4030521b1a7d11c7dadbb272d9439fa6e8e"
-  name = "github.com/xdg/stringprep"
-  packages = ["."]
-  pruneopts = "UT"
-  revision = "73f8eece6fdcd902c185bf651de50f3828bed5ed"
+  revision = "ccf36d0607fa2f6f4ae9645e625a7f33b26cf6d1"
+  version = "v1.0.0-rc1"
 
 [[projects]]
   branch = "master"
@@ -107,9 +107,9 @@
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
-    "github.com/mongodb/mongo-go-driver/bson",
-    "github.com/mongodb/mongo-go-driver/mongo",
-    "github.com/mongodb/mongo-go-driver/mongo/options",
+    "go.mongodb.org/mongo-driver/bson",
+    "go.mongodb.org/mongo-driver/mongo",
+    "go.mongodb.org/mongo-driver/mongo/options",
   ]
   solver-name = "gps-cdcl"
   solver-version = 1

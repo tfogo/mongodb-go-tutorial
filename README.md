@@ -1,4 +1,4 @@
-# MongoDB Go Driver Tutorial
+# MongoDB Go Driver Tutorial Part 1: Connecting, Using BSON, and CRUD Operations
 
 With the official MongoDB Go Driver [recently moving to beta](https://www.mongodb.com/blog/post/official-mongodb-go-driver-now-available-for-beta-testing), it's now regarded as feature complete and ready for a wider audience to start using. This tutorial will help you get started with the [MongoDB Go Driver](https://github.com/mongodb/mongo-go-driver/). You will create a simple program and learn how to:
 
@@ -14,17 +14,17 @@ You can view the complete code for this tutorial on [this GitHub repository](htt
 The MongoDB Go Driver is made up of several packages. If you are just using `go get`, you can install the driver using:
 
 ```
-go get github.com/mongodb/mongo-go-driver
+go get go.mongodb.org/mongo-driver
 ```
 
-The output of this may look like a warning stating something like `package github.com/mongodb/mongo-go-driver: no Go files in (...)`. This is expected output.
+The output of this may look like a warning stating something like `package go.mongodb.org/mongo-driver: no Go files in (...)`. This is expected output.
 
 If you are using the [`dep`](https://golang.github.io/dep/docs/introduction.html) package manager, you can install the main `mongo` package as well as the `bson` and `mongo/options` package using this command:
 
 ```
-dep ensure --add github.com/mongodb/mongo-go-driver/mongo \
-github.com/mongodb/mongo-go-driver/bson \
-github.com/mongodb/mongo-go-driver/mongo/options
+dep ensure --add go.mongodb.org/mongo-driver/mongo \
+go.mongodb.org/mongo-driver/bson \
+go.mongodb.org/mongo-driver/mongo/options
 ```
 
 ## Create the wireframe
@@ -39,9 +39,9 @@ import (
     "fmt"
     "log"
 
-    "github.com/mongodb/mongo-go-driver/bson"
-    "github.com/mongodb/mongo-go-driver/mongo"
-    "github.com/mongodb/mongo-go-driver/mongo/options"
+    "go.mongodb.org/mongo-driver/bson"
+    "go.mongodb.org/mongo-driver/mongo"
+    "go.mongodb.org/mongo-driver/mongo/options"
 )
 
 // You will be using this Trainer type later in the program
@@ -61,12 +61,16 @@ This code also imports some standard libraries and defines a `Trainer` type. You
 
 ## Connect to MongoDB using the Go Driver
 
-Once the MongoDB Go Driver has been imported, you can connect to a MongoDB deployment using the `mongo.Connect()` function. You must pass a context and connection string to `mongo.Connect()`. Optionally, you can also pass in an `options.ClientOptions` object as a third argument to configure driver settings such as write concerns, socket timeouts, and more. [The options package documentation](https://godoc.org/github.com/mongodb/mongo-go-driver/mongo/options) has more information about what client options are available.
+Once the MongoDB Go Driver has been imported, you can connect to a MongoDB deployment using the `mongo.Connect()` function. You must pass a context and a `options.ClientOptions` object to `mongo.Connect()`. The client options are used to set the connection string. It can also be used to configure driver settings such as write concerns, socket timeouts, and more. [The options package documentation](https://godoc.org/go.mongodb.org/mongo-driver/mongo/options) has more information about what client options are available.
 
 Add this code in the main function:
 
 ```go
-client, err := mongo.Connect(context.TODO(), "mongodb://localhost:27017")
+// Set client options
+clientOptions := options.Client().ApplyURI("mongodb://localhost:27017")
+
+// Connect to MongoDB
+client, err := mongo.Connect(context.TODO(), clientOptions)
 
 if err != nil {
     log.Fatal(err)
@@ -126,7 +130,7 @@ bson.D{{
 }}
 ```
 
-The `Raw` family of types is used for validating a slice of bytes. You can also retrieve single elements from Raw types using a [`Lookup()`](https://godoc.org/github.com/mongodb/mongo-go-driver/bson#Raw.Lookup). This is useful if you don't want the overhead of having to unmarshall the BSON into another type. This tutorial will just use the `D` family of types.
+The `Raw` family of types is used for validating a slice of bytes. You can also retrieve single elements from Raw types using a [`Lookup()`](https://godoc.org/go.mongodb.org/mongo-driver/bson#Raw.Lookup). This is useful if you don't want the overhead of having to unmarshall the BSON into another type. This tutorial will just use the `D` family of types.
 
 ## CRUD Operations
 
@@ -249,7 +253,7 @@ fmt.Printf("Found multiple documents (array of pointers): %+v\n", results)
 
 ### Delete Documents
 
-Finally, you can delete documents using `collection.DeleteOne()` or `collection.DeleteMany()`. Here you pass `bson.D{{}}` as the filter argument, which will match all documents in the collection. You could also use [`collection.Drop()`](https://godoc.org/github.com/mongodb/mongo-go-driver/mongo#Collection.Drop) to delete an entire collection.
+Finally, you can delete documents using `collection.DeleteOne()` or `collection.DeleteMany()`. Here you pass `bson.D{{}}` as the filter argument, which will match all documents in the collection. You could also use [`collection.Drop()`](https://godoc.org/go.mongodb.org/mongo-driver/mongo#Collection.Drop) to delete an entire collection.
 
 ```go
 deleteResult, err := collection.DeleteMany(context.TODO(), bson.D{{}})
@@ -261,6 +265,6 @@ fmt.Printf("Deleted %v documents in the trainers collection\n", deleteResult.Del
 
 ## Next steps
 
-You can view the final code from this tutorial in [this GitHub repository](https://github.com/tfogo/mongodb-go-tutorial). Documentation for the MongoDB Go Driver is available on [GoDoc](https://godoc.org/github.com/mongodb/mongo-go-driver). You may be particularly interested in the documentation about using [aggregations](https://godoc.org/github.com/mongodb/mongo-go-driver/mongo#Collection.Aggregate) or [transactions](https://godoc.org/github.com/mongodb/mongo-go-driver/mongo#Session). 
+You can view the final code from this tutorial in [this GitHub repository](https://github.com/tfogo/mongodb-go-tutorial). Documentation for the MongoDB Go Driver is available on [GoDoc](https://godoc.org/github.com/mongodb/mongo-go-driver). You may be particularly interested in the documentation about using [aggregations](https://godoc.org/go.mongodb.org/mongo-driver/mongo#Collection.Aggregate) or [transactions](https://godoc.org/go.mongodb.org/mongo-driver/mongo#Session). 
 
 If you have any questions, please get in touch in the [mongo-go-driver Google Group](https://groups.google.com/forum/#!forum/mongodb-go-driver). Please file any bug reports on the Go project in the [MongoDB JIRA](https://www.google.com/url?q=https%3A%2F%2Fjira.mongodb.org%2Fprojects%2FGODRIVER&sa=D&sntz=1&usg=AFQjCNEOEt6d3ZNOMKzmT23RYOVYdjSD6g). We would love your feedback on the Go Driver, so please get in touch with us to let us know your thoughts.
