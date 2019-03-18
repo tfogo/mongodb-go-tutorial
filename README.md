@@ -1,6 +1,6 @@
 # MongoDB Go Driver Tutorial Part 1: Connecting, Using BSON, and CRUD Operations
 
-With the official MongoDB Go Driver [recently moving to beta](https://www.mongodb.com/blog/post/official-mongodb-go-driver-now-available-for-beta-testing), it's now regarded as feature complete and ready for a wider audience to start using. This tutorial will help you get started with the [MongoDB Go Driver](https://github.com/mongodb/mongo-go-driver/). You will create a simple program and learn how to:
+The official MongoDB Go Driver [recently moved to GA](#) with the release of version 1.0.0. It's now regarded as feature complete and ready for production use. This tutorial will help you get started with the [MongoDB Go Driver](https://github.com/mongodb/mongo-go-driver/). You will create a simple program and learn how to:
 
 - Install the MongoDB Go Driver
 - Connect to MongoDB using the Go Driver
@@ -17,7 +17,7 @@ The MongoDB Go Driver is made up of several packages. If you are just using `go 
 go get go.mongodb.org/mongo-driver
 ```
 
-The output of this may look like a warning stating something like `package go.mongodb.org/mongo-driver: no Go files in (...)`. This is expected output.
+The output of this may look like a warning stating something like `package go.mongodb.org/mongo-driver: no Go files in (...)`. This is expected output from `go get`.
 
 If you are using the [`dep`](https://golang.github.io/dep/docs/introduction.html) package manager, you can install the main `mongo` package as well as the `bson` and `mongo/options` package using this command:
 
@@ -26,6 +26,8 @@ dep ensure --add go.mongodb.org/mongo-driver/mongo \
 go.mongodb.org/mongo-driver/bson \
 go.mongodb.org/mongo-driver/mongo/options
 ```
+
+If you are using [`go mod`](https://github.com/golang/go/wiki/Modules), the correct packages should be retrieved at build time.
 
 ## Create the wireframe
 
@@ -109,7 +111,7 @@ Run the code (`go run main.go`) to test that your program can successfully conne
 
 ## Use BSON Objects in Go
 
-JSON documents in MongoDB are stored in a binary representation called BSON (Binary-encoded JSON). Unlike other databases that store JSON data as simple strings and numbers, the BSON encoding extends the JSON representation to include additional types such as int, long, date, floating point, and decimal128. This makes it much easier for applications to reliably process, sort, and compare data. The Go Driver has two families of types for representing BSON data: The `D` types and the `Raw` types.
+Before we start sending queries to the database, it's important to understand how the Go Driver works with BSON objects. JSON documents in MongoDB are stored in a binary representation called BSON (Binary-encoded JSON). Unlike other databases that store JSON data as simple strings and numbers, the BSON encoding extends the JSON representation to include additional types such as int, long, date, floating point, and decimal128. This makes it much easier for applications to reliably process, sort, and compare data. The Go Driver has two families of types for representing BSON data: The `D` types and the `Raw` types.
 
 The `D` family of types is used to concisely build BSON objects using native Go types. This can be particularly useful for constructing commands passed to MongoDB. The `D` family consists of four types:
 
@@ -265,6 +267,6 @@ fmt.Printf("Deleted %v documents in the trainers collection\n", deleteResult.Del
 
 ## Next steps
 
-You can view the final code from this tutorial in [this GitHub repository](https://github.com/tfogo/mongodb-go-tutorial). Documentation for the MongoDB Go Driver is available on [GoDoc](https://godoc.org/github.com/mongodb/mongo-go-driver). You may be particularly interested in the documentation about using [aggregations](https://godoc.org/go.mongodb.org/mongo-driver/mongo#Collection.Aggregate) or [transactions](https://godoc.org/go.mongodb.org/mongo-driver/mongo#Session). 
+You can view the final code from this tutorial in [this GitHub repository](https://github.com/tfogo/mongodb-go-tutorial). Documentation for the MongoDB Go Driver is available on [GoDoc](https://godoc.org/go.mongodb.org/mongo-driver). You may be particularly interested in the documentation about using [aggregations](https://godoc.org/go.mongodb.org/mongo-driver/mongo#Collection.Aggregate) or [transactions](https://godoc.org/go.mongodb.org/mongo-driver/mongo#Session). 
 
 If you have any questions, please get in touch in the [mongo-go-driver Google Group](https://groups.google.com/forum/#!forum/mongodb-go-driver). Please file any bug reports on the Go project in the [MongoDB JIRA](https://www.google.com/url?q=https%3A%2F%2Fjira.mongodb.org%2Fprojects%2FGODRIVER&sa=D&sntz=1&usg=AFQjCNEOEt6d3ZNOMKzmT23RYOVYdjSD6g). We would love your feedback on the Go Driver, so please get in touch with us to let us know your thoughts.
